@@ -1,0 +1,12 @@
+.board {
+    width: fit-content;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 20px;
+    background-color: #282c34;
+}
+
+.board > * {
+    width: 200px;
+    margin-right: 10px;
+}

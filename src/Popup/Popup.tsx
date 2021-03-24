@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import nameStore from '../utils/store';
+import nameStore from '../utils/NameStoreService';
 
 interface PopupProps {
   show: boolean;
