@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { setItem } from '../utils/store';
 
 interface PopupProps {
   show: boolean;
@@ -10,8 +11,7 @@ export const Popup: React.FC<PopupProps> = (props) => {
   const [text, setText] = useState<string>('');
 
   const saveAuthorName = () => {
-    const storage = window.localStorage;
-    storage.setItem('author', text);
+    setItem('author', text);
     props.onHide();
   };
 

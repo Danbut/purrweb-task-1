@@ -2,26 +2,27 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Popup } from './Popup/Popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getItem } from './utils/store';
 
 function App() {
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [isShowPopup, setIsShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
-    const storage = window.localStorage;
-    const author = storage.getItem('author');
+
+    const author = getItem('author');
 
     if (!author) {
-      setShowPopup(true);
+      setIsShowPopup(true);
     }
   }, []);
 
   const handleClose = () => {
-    setShowPopup(false);
+    setIsShowPopup(false);
   };
 
   return (
     <div className="App">
-      <Popup show={showPopup} onHide={handleClose} />
+      <Popup show={isShowPopup} onHide={handleClose} />
     </div>
   );
 }
