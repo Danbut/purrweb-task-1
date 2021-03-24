@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TaskList } from '../entities/TaskList/ITaskList';
 import { Button, Form } from 'react-bootstrap';
 import useDebounce from '../customHooks/useDebounce';
-import TaskListStoreService from '../utils/TaskListStoreService';
+import store from '../utils/store'
 import "./column.css"
 
 interface ColumnProps {
@@ -15,7 +15,7 @@ export const Column: React.FC<ColumnProps> = ({taskList}) => {
 
   useEffect(() => {
     if (debouncedColumnName) {
-        TaskListStoreService.renameColumn(taskList.id, debouncedColumnName);
+        store.renameColumn(taskList.id, debouncedColumnName);
     }
   }, [debouncedColumnName, taskList.id]);
 

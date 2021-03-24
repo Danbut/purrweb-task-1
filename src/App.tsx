@@ -2,28 +2,27 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Popup } from './Popup/Popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import nameStore from './utils/NameStoreService';
+import store from './utils/store';
 import { Board } from './Board/Board';
 import { DONE_COLUMN_NAME, IN_PROGRESS_COLUMN_NAME, TESTING_COLUMN_NAME, TODO_COLUMN_NAME } from './constants/exampleColumnNames';
-import TaskListStoreService from './utils/TaskListStoreService';
 
 function App() {
   const [isShowPopup, setIsShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
-    const author = nameStore.getName()
+    const author = store.getName()
 
     if (!author) {
       setIsShowPopup(true);
     }
 
-    const columns = TaskListStoreService.getColumns()
+    const columns = store.getColumns()
 
     if (!columns.length) {
-      TaskListStoreService.addColumn(TODO_COLUMN_NAME)
-      TaskListStoreService.addColumn(IN_PROGRESS_COLUMN_NAME)
-      TaskListStoreService.addColumn(TESTING_COLUMN_NAME)
-      TaskListStoreService.addColumn(DONE_COLUMN_NAME)
+      store.addColumn(TODO_COLUMN_NAME)
+      store.addColumn(IN_PROGRESS_COLUMN_NAME)
+      store.addColumn(TESTING_COLUMN_NAME)
+      store.addColumn(DONE_COLUMN_NAME)
     }
   }, []);
 

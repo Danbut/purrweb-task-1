@@ -1,9 +1,22 @@
 import { TaskListImpl } from '../entities/TaskList/TaskList';
 import { TaskList } from '../entities/TaskList/ITaskList';
 
-class TaskListStoreService {
-  private key = "columns"
-  private storage = window.localStorage
+class StoreService {
+  private authorNameKey = 'author'
+  private columnKey = "columns"
+  private storage = window.localStorage;
+
+  public setName(name: string) {
+    this.storage.setItem(this.authorNameKey, name)
+  }
+
+  public getName() {
+    return this.storage.getItem(this.authorNameKey)
+  }
+
+  public removeName() {
+    this.storage.removeItem(this.authorNameKey)
+  }
 
   addColumn(name: string) {
     const columns = this.getColumns()
@@ -15,7 +28,7 @@ class TaskListStoreService {
   }
 
   public getColumns(): TaskList[] {
-    const value = this.storage.getItem(this.key)
+    const value = this.storage.getItem(this.columnKey)
     if (value) {
       return JSON.parse(value)
     }
@@ -24,7 +37,7 @@ class TaskListStoreService {
   }
 
   public removeColumns() {
-    this.storage.removeItem(this.key)
+    this.storage.removeItem(this.columnKey)
   }
 
   public renameColumn(id: string, name: string) {
@@ -39,8 +52,8 @@ class TaskListStoreService {
   }
 
   private setColumns(arr: TaskList[]) {
-    this.storage.setItem(this.key, JSON.stringify(arr))
+    this.storage.setItem(this.columnKey, JSON.stringify(arr))
   }
 }
 
-export default new TaskListStoreService()
+export default new StoreService()

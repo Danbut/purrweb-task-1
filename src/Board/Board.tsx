@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import './board.css'
 import { TaskList } from '../entities/TaskList/ITaskList';
-import TaskListStoreService from '../utils/TaskListStoreService';
+import store from '../utils/store';
 import { Column } from '../Column/Column';
 
 interface BoardProps {
@@ -12,7 +12,7 @@ export const Board: React.FC<BoardProps> = () => {
   const [columns, setColumns] = useState<TaskList[]>([])
 
   useEffect(() => {
-    setColumns(TaskListStoreService.getColumns())
+    setColumns(store.getColumns())
   }, [])
 
   return (
