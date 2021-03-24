@@ -1,7 +1,18 @@
-const storage = window.localStorage;
+class NameStoreService {
+  private key = 'author'
+  private storage = window.localStorage;
 
-export const setItem = (key: string, value: any) => {
-  storage.setItem(key, value);
+  public setName(name: string) {
+    this.storage.setItem(this.key, name)
+  }
+
+  public getName() {
+    return this.storage.getItem(this.key)
+  }
+
+  public removeName() {
+    this.storage.removeItem(this.key)
+  }
 }
 
-export const getItem = (key: string) => storage.getItem(key);
+export default new NameStoreService()
