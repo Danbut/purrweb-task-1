@@ -1,0 +1,17 @@
+.column {
+  padding: 20px;
+  background-color: white;
+}
+
+.column__header {
+  display: flex;
+}
+
+.column__columnName {
+  overflow: hidden;
+  resize: none;
+}
+
+.column__more {
+  padding: 3px;
+}
