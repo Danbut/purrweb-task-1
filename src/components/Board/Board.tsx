@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./board.css";
+import "./Board.css";
+import { Column } from "../Column/Column";
 import { TaskList } from "../../entities/TaskList/ITaskList";
 import store from "../../utils/store";
-import { Column } from "../Column/Column";
 
 interface BoardProps {}
 
@@ -10,7 +10,7 @@ export const Board: React.FC<BoardProps> = () => {
   const [columns, setColumns] = useState<TaskList[]>([]);
 
   useEffect(() => {
-    setColumns(store.getColumns());
+    setColumns(store.getColumns);
   }, []);
 
   return (

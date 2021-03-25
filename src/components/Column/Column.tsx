@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { TaskList } from "../../entities/TaskList/ITaskList";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import store from "../../utils/store";
-import "./column.css";
+import "./Column.css";
+import { AddCard } from "../AddCard/AddCard";
 
 interface ColumnProps {
   taskList: TaskList;
@@ -16,12 +17,12 @@ export const Column: React.FC<ColumnProps> = ({ taskList }) => {
   };
 
   return (
-    <Form className="column" onSubmit={renameColumn}>
+    <Form className="column">
       <Form.Group className="column__header" controlId="formBasicColumnName">
         <Form.Control
           as="textarea"
           rows={1}
-          className="column__columnName"
+          className="column__column-name"
           plaintext
           type="text"
           value={columnName}
@@ -31,9 +32,7 @@ export const Column: React.FC<ColumnProps> = ({ taskList }) => {
         <a className="column__more">...</a>
       </Form.Group>
 
-      <Button variant="primary" block>
-        Add task
-      </Button>
+      <AddCard columnId={taskList.id} />
     </Form>
   );
 };

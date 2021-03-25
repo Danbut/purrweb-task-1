@@ -1,0 +1,27 @@
+.add-task-form {
+    background-color: white;
+}
+
+.add-task-form__header {
+    display: flex;
+}
+
+.add-task-form__task-name {
+    overflow: hidden;
+    resize: none;
+}
+
+.add-task-form__footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+}
+
+.add-task-form__close:after{
+    color: #6b778c;
+    display: inline-block;
+    content: "\00d7";
+    height: 32px;
+    width: 32px;
+    font-size: 24px;
+}

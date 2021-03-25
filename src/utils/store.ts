@@ -1,5 +1,6 @@
 import { TaskListImpl } from "../entities/TaskList/TaskList";
 import { TaskList } from "../entities/TaskList/ITaskList";
+import { TaskImpl } from "../entities/Task/Task";
 
 class StoreService {
   private authorNameKey = "author";
@@ -68,6 +69,19 @@ class StoreService {
       }
       return c;
     });
+
+    this.setColumns(columns);
+  }
+
+  // Task store
+
+  public addTask(name: string, columnId: string) {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = new TaskImpl(name, column.tasks.length, columnId);
+      column.tasks.push(task);
+    }
 
     this.setColumns(columns);
   }
