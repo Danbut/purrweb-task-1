@@ -17,10 +17,12 @@ export const Column: React.FC<ColumnProps> = ({taskList}) => {
 
   return (
       <Form className="column" onSubmit={renameColumn}>
-        <Form.Group controlId="formBasicColumnName">
-          <Form.Control plaintext type="text" value={columnName} onChange={
-            ({ target: { value } }) => setColumnName(value)
-          } onBlur={renameColumn} />
+        <Form.Group className="column__header" controlId="formBasicColumnName">
+          <Form.Control as="textarea" rows={1} className="column__columnName" plaintext type="text"
+                        value={columnName} onChange={
+                          ({ target: { value } }) => setColumnName(value)}
+                        onBlur={renameColumn} />
+          <a className="column__more">...</a>
         </Form.Group>
 
         <Button variant="primary" block>
