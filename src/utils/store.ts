@@ -6,6 +6,8 @@ class StoreService {
   private columnKey = "columns"
   private storage = window.localStorage;
 
+  // Name store
+
   public setName(name: string) {
     this.storage.setItem(this.authorNameKey, name)
   }
@@ -18,12 +20,16 @@ class StoreService {
     this.storage.removeItem(this.authorNameKey)
   }
 
-  addColumn(name: string) {
+  // Columns store
+
+  public addColumns(names: string[]) {
     const columns = this.getColumns()
     const position = columns.length ?? 0
-    const taskList = new TaskListImpl(name, position)
 
-    columns.push(taskList)
+    names.forEach((name, index) => {
+      columns.push(new TaskListImpl(name, position + index))
+    })
+
     this.setColumns(columns)
   }
 
@@ -36,8 +42,23 @@ class StoreService {
     return []
   }
 
+  private setColumns(arr: TaskList[]) {
+    this.storage.setItem(this.columnKey, JSON.stringify(arr))
+  }
+
   public removeColumns() {
     this.storage.removeItem(this.columnKey)
+  }
+
+  // Column store
+
+  public addColumn(name: string) {
+    const columns = this.getColumns()
+    const position = columns.length ?? 0
+    const taskList = new TaskListImpl(name, position)
+
+    columns.push(taskList)
+    this.setColumns(columns)
   }
 
   public renameColumn(id: string, name: string) {
@@ -49,10 +70,6 @@ class StoreService {
     })
 
     this.setColumns(columns)
-  }
-
-  private setColumns(arr: TaskList[]) {
-    this.storage.setItem(this.columnKey, JSON.stringify(arr))
   }
 }
 

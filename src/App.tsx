@@ -19,10 +19,10 @@ function App() {
     const columns = store.getColumns()
 
     if (!columns.length) {
-      store.addColumn(TODO_COLUMN_NAME)
-      store.addColumn(IN_PROGRESS_COLUMN_NAME)
-      store.addColumn(TESTING_COLUMN_NAME)
-      store.addColumn(DONE_COLUMN_NAME)
+      store.addColumns([
+        TODO_COLUMN_NAME, IN_PROGRESS_COLUMN_NAME,
+        TESTING_COLUMN_NAME, DONE_COLUMN_NAME
+      ])
     }
   }, []);
 
