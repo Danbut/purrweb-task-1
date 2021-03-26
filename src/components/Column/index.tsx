@@ -30,9 +30,6 @@ const Column: React.FC<ColumnProps> = ({ column }) => {
           onChange={({ target: { value } }) => setColumnName(value)}
           onBlur={renameColumn}
         />
-        <a className="column__more" href="">
-          ...
-        </a>
       </Form.Group>
       {column.tasks.map((t) => (
         <Card task={t} key={`id:${t.id}`} />

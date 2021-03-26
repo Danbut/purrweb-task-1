@@ -88,6 +88,16 @@ class StoreService {
     this.setColumns(columns);
   };
 
+  removeTask = (taskId: string, columnId: string): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      column.tasks = column.tasks.filter((t) => taskId !== t.id);
+    }
+
+    this.setColumns(columns);
+  };
+
   // Comment Store
 
   addComment = (
