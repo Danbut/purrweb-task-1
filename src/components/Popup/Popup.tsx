@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import nameStore from '../utils/store';
+import React, { useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import store from "../../utils/store";
 
 interface PopupProps {
   show: boolean;
@@ -8,10 +8,10 @@ interface PopupProps {
 }
 
 export const Popup: React.FC<PopupProps> = (props) => {
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>("");
 
   const saveAuthorName = () => {
-    nameStore.setName(text)
+    store.setName(text);
     props.onHide();
   };
 
@@ -24,7 +24,9 @@ export const Popup: React.FC<PopupProps> = (props) => {
       onSubmit={saveAuthorName}
     >
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">Please, enter your name</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Please, enter your name
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
