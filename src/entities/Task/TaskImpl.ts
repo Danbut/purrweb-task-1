@@ -1,19 +1,19 @@
 import { uuidv4 } from "../../utils/uuidv4";
-import store from "../../utils/store";
 import { ITask } from "./ITask";
+import { IComment } from "../Comment/IComment";
 
 export class TaskImpl implements ITask {
   id: string;
   name: string;
-  position: number;
   columnId: string;
   author: string;
+  comments: IComment[];
 
-  constructor(name: string, position: number, columnId: string) {
+  constructor(name: string, columnId: string, author: string) {
     this.id = uuidv4();
     this.name = name;
-    this.position = position;
     this.columnId = columnId;
-    this.author = store.getName()!!;
+    this.author = author;
+    this.comments = [];
   }
 }

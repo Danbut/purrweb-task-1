@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import Popup from "./components/Popup";
+import EnterNamePopup from "./components/Popup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./utils/store";
 import Board from "./components/Board";
@@ -43,7 +43,7 @@ function App() {
       <ColumnsProvider>
         <Board />
       </ColumnsProvider>
-      <Popup show={isShowPopup} onHide={handleClose} />
+      <EnterNamePopup show={isShowPopup} onHide={handleClose} />
     </div>
   );
 }

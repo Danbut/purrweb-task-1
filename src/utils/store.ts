@@ -1,10 +1,12 @@
 import { ColumnImpl } from "../entities/Column/ColumnImpl";
 import { IColumn } from "../entities/Column/IColumn";
+import { CommentImpl } from "../entities/Comment/CommentImpl";
 import { TaskImpl } from "../entities/Task/TaskImpl";
 
 class StoreService {
   private authorNameKey = "author";
   private columnKey = "columns";
+  private commentsKey = "comments";
   private storage = window.localStorage;
 
   // Name store
@@ -25,10 +27,9 @@ class StoreService {
 
   addColumns = (names: string[]): void => {
     const columns = this.getColumns();
-    const position = columns.length ?? 0;
 
-    names.forEach((name, index) => {
-      columns.push(new ColumnImpl(name, position + index));
+    names.forEach((name) => {
+      columns.push(new ColumnImpl(name));
     });
 
     this.setColumns(columns);
@@ -56,8 +57,7 @@ class StoreService {
 
   addColumn = (name: string): void => {
     const columns = this.getColumns();
-    const position = columns.length ?? 0;
-    const taskList = new ColumnImpl(name, position);
+    const taskList = new ColumnImpl(name);
 
     columns.push(taskList);
     this.setColumns(columns);
@@ -79,12 +79,35 @@ class StoreService {
   addTask = (name: string, columnId: string): void => {
     const columns = this.getColumns();
     const column = columns.find((c) => columnId === c.id);
+    const author = this.getName()!!;
     if (column) {
-      const task = new TaskImpl(name, column.tasks.length, columnId);
+      const task = new TaskImpl(name, columnId, author);
       column.tasks.push(task);
     }
 
     this.setColumns(columns);
+  };
+
+  // Comment Store
+
+  addComment = (
+    comment: string,
+    author: string,
+    taskId: string,
+    columnId: string
+  ) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    const task = column?.tasks.find((t) => taskId === t.id);
+    task?.comments.push(new CommentImpl(comment, author));
+
+    this.setColumns(columns);
+  };
+
+  getComments = (taskId: string, columnId: string) => {
+    const column = this.getColumns().find((c) => columnId === c.id);
+    const task = column?.tasks.find((t) => taskId === t.id);
+    return task?.comments;
   };
 }
 
