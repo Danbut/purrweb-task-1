@@ -98,6 +98,23 @@ class StoreService {
     this.setColumns(columns);
   };
 
+  changeTaskDescription = (
+    taskId: string,
+    columnId: string,
+    description: string
+  ): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.description = description;
+      }
+    }
+
+    this.setColumns(columns);
+  };
+
   // Comment Store
 
   addComment = (

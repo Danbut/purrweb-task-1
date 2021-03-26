@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useColumns } from "../../context/ColumnsContext";
 import { CommentsProvider } from "../../context/CommentsContext";
 import { ITask } from "../../entities/Task/ITask";
+import store from "../../utils/store";
 import CommentForm from "../CommentForm";
 import CommentsList from "../CommentList";
 import "./index.css";
@@ -15,6 +16,15 @@ interface CardDetailsPopupProps {
 
 const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
   const [columns] = useColumns();
+  const [description, setDescription] = useState(props.task.description);
+
+  const changeDescription = () => {
+    store.changeTaskDescription(
+      props.task.id,
+      props.task.columnId,
+      description
+    );
+  };
 
   return (
     <Modal
@@ -42,7 +52,10 @@ const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
               rows={3}
               placeholder="Enter your description"
               className="card-details__description"
+              value={description}
+              onChange={({ target: { value } }) => setDescription(value)}
               plaintext
+              onBlur={changeDescription}
             />
           </Form.Group>
         </Form>

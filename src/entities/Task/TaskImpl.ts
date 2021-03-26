@@ -7,6 +7,7 @@ export class TaskImpl implements ITask {
   name: string;
   columnId: string;
   author: string;
+  description: string;
   comments: IComment[];
 
   constructor(name: string, columnId: string, author: string) {
@@ -15,5 +16,6 @@ export class TaskImpl implements ITask {
     this.columnId = columnId;
     this.author = author;
     this.comments = [];
+    this.description = "";
   }
 }
