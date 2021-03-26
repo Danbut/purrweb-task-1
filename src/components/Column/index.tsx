@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { ITaskList } from "../../entities/TaskList/ITaskList";
+import { IColumn } from "../../entities/Column/IColumn";
 import { Form } from "react-bootstrap";
 import store from "../../utils/store";
 import "./index.css";
 import AddCard from "../AddCard";
+import Card from "../Card";
 
 interface ColumnProps {
-  taskList: ITaskList;
+  column: IColumn;
 }
 
-const Column: React.FC<ColumnProps> = ({ taskList }) => {
-  const [columnName, setColumnName] = useState(taskList.name);
+const Column: React.FC<ColumnProps> = ({ column }) => {
+  const [columnName, setColumnName] = useState(column.name);
 
   const renameColumn = () => {
-    store.renameColumn(taskList.id, columnName);
+    store.renameColumn(column.id, columnName);
   };
 
   return (
@@ -31,8 +32,10 @@ const Column: React.FC<ColumnProps> = ({ taskList }) => {
         />
         <a className="column__more">...</a>
       </Form.Group>
-
-      <AddCard columnId={taskList.id} />
+      {column.tasks.map((t) => (
+        <Card task={t} />
+      ))}
+      <AddCard columnId={column.id} />
     </Form>
   );
 };

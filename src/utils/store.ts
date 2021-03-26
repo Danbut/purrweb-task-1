@@ -1,5 +1,5 @@
-import { TaskListImpl } from "../entities/TaskList/TaskListImpl";
-import { ITaskList } from "../entities/TaskList/ITaskList";
+import { ColumnImpl } from "../entities/Column/ColumnImpl";
+import { IColumn } from "../entities/Column/IColumn";
 import { TaskImpl } from "../entities/Task/TaskImpl";
 
 class StoreService {
@@ -28,22 +28,23 @@ class StoreService {
     const position = columns.length ?? 0;
 
     names.forEach((name, index) => {
-      columns.push(new TaskListImpl(name, position + index));
+      columns.push(new ColumnImpl(name, position + index));
     });
 
     this.setColumns(columns);
   };
 
-  getColumns = (): ITaskList[] => {
+  getColumns = (): IColumn[] => {
     const value = this.storage.getItem(this.columnKey);
     if (value) {
-      return JSON.parse(value);
+      const columns = JSON.parse(value);
+      return columns;
     }
 
     return [];
   };
 
-  setColumns = (arr: ITaskList[]): void => {
+  setColumns = (arr: IColumn[]): void => {
     this.storage.setItem(this.columnKey, JSON.stringify(arr));
   };
 
@@ -56,7 +57,7 @@ class StoreService {
   addColumn = (name: string): void => {
     const columns = this.getColumns();
     const position = columns.length ?? 0;
-    const taskList = new TaskListImpl(name, position);
+    const taskList = new ColumnImpl(name, position);
 
     columns.push(taskList);
     this.setColumns(columns);

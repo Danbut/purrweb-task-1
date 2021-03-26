@@ -10,6 +10,7 @@ import {
   TESTING_COLUMN_NAME,
   TODO_COLUMN_NAME,
 } from "./constants/exampleColumnNames";
+import { ColumnsProvider } from "./context/ColumnsContext";
 
 function App() {
   const [isShowPopup, setIsShowPopup] = useState(false);
@@ -39,7 +40,9 @@ function App() {
 
   return (
     <div className="App">
-      <Board />
+      <ColumnsProvider>
+        <Board />
+      </ColumnsProvider>
       <Popup show={isShowPopup} onHide={handleClose} />
     </div>
   );

@@ -1,6 +1,6 @@
 import { ITask } from "../Task/ITask";
 
-export interface ITaskList {
+export interface IColumn {
   readonly id: string;
   name: string;
   readonly position: number;

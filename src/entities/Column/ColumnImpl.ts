@@ -1,8 +1,8 @@
 import { uuidv4 } from "../../utils/uuidv4";
-import { ITaskList } from "./ITaskList";
+import { IColumn } from "./IColumn";
 import { ITask } from "../Task/ITask";
 
-export class TaskListImpl implements ITaskList {
+export class ColumnImpl implements IColumn {
   id: string;
   name: string;
   position: number;
