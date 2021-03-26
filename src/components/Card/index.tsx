@@ -5,6 +5,7 @@ import {
   Card as BootstrapCard,
   OverlayTrigger,
   Popover,
+  Form,
 } from "react-bootstrap";
 import "./index.css";
 import CardDetailsPopup from "../CardDetailsPopup";
@@ -18,7 +19,9 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ task }) => {
   const [isShowCardDetails, setIsShowCardDetails] = useState(false);
   const [countComments, setCountComments] = useState<number | undefined>();
+  const [isRenamingTask, setIsRenamingTask] = useState(false);
   const [, setColumns] = useColumns();
+  const [taskName, setTaskName] = useState(task.name);
 
   useEffect(() => {
     const countComments = store.getComments(task.id, task.columnId);
@@ -36,10 +39,27 @@ const Card: React.FC<CardProps> = ({ task }) => {
     }
   };
 
+  const renameTask = () => {
+    store.renameTask(task.id, task.columnId, taskName);
+    if (setColumns) {
+      setColumns(store.getColumns());
+    }
+  };
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Task Actions</Popover.Title>
-      <Popover.Content>
+      <Popover.Content className="popover__actions">
+        <Button
+          variant="primary"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setIsRenamingTask(true);
+          }}
+        >
+          Rename task
+        </Button>
         <Button variant="danger" onClick={removeTask}>
           Remove task
         </Button>
@@ -54,7 +74,32 @@ const Card: React.FC<CardProps> = ({ task }) => {
         bg="light"
         onClick={() => setIsShowCardDetails(true)}
       >
-        <BootstrapCard.Title className="h6">{task.name}</BootstrapCard.Title>
+        {isRenamingTask ? (
+          <Form>
+            <Form.Group controlId="formBasicColumnName">
+              <Form.Control
+                as="textarea"
+                rows={1}
+                plaintext
+                type="text"
+                value={taskName}
+                onChange={(e) => {
+                  setTaskName(e.target.value);
+                }}
+                onClick={(
+                  e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
+                ) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}
+                className="card__renaming-task"
+                onBlur={renameTask}
+              />
+            </Form.Group>
+          </Form>
+        ) : (
+          <BootstrapCard.Title className="h6">{task.name}</BootstrapCard.Title>
+        )}
         <BootstrapCard.Body className="card__body">
           {countComments && countComments > 0 ? (
             <span>
