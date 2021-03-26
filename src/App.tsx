@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Popup } from './Popup/Popup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import nameStore from './utils/store';
 
 function App() {
+  const [isShowPopup, setIsShowPopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    const author = nameStore.getName()
+
+    if (!author) {
+      setIsShowPopup(true);
+    }
+  }, []);
+
+  const handleClose = () => {
+    setIsShowPopup(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Popup show={isShowPopup} onHide={handleClose} />
     </div>
   );
 }
