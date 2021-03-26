@@ -1,14 +1,17 @@
 import { uuidv4 } from "../../utils/uuidv4";
-import { TaskList } from "./ITaskList";
+import { IColumn } from "./IColumn";
+import { ITask } from "../Task/ITask";
 
-export class TaskListImpl implements TaskList {
+export class ColumnImpl implements IColumn {
   id: string;
   name: string;
   position: number;
+  tasks: ITask[];
 
   constructor(name: string, position: number) {
     this.id = uuidv4();
     this.name = name;
     this.position = position;
+    this.tasks = [];
   }
 }

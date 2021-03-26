@@ -1,5 +1,6 @@
-import { TaskListImpl } from "../entities/TaskList/TaskList";
-import { TaskList } from "../entities/TaskList/ITaskList";
+import { ColumnImpl } from "../entities/Column/ColumnImpl";
+import { IColumn } from "../entities/Column/IColumn";
+import { TaskImpl } from "../entities/Task/TaskImpl";
 
 class StoreService {
   private authorNameKey = "author";
@@ -8,60 +9,61 @@ class StoreService {
 
   // Name store
 
-  public setName(name: string) {
+  setName = (name: string): void => {
     this.storage.setItem(this.authorNameKey, name);
-  }
+  };
 
-  public getName() {
+  getName = (): string | null => {
     return this.storage.getItem(this.authorNameKey);
-  }
+  };
 
-  public removeName() {
+  removeName = (): void => {
     this.storage.removeItem(this.authorNameKey);
-  }
+  };
 
   // Columns store
 
-  public addColumns(names: string[]) {
+  addColumns = (names: string[]): void => {
     const columns = this.getColumns();
     const position = columns.length ?? 0;
 
     names.forEach((name, index) => {
-      columns.push(new TaskListImpl(name, position + index));
+      columns.push(new ColumnImpl(name, position + index));
     });
 
     this.setColumns(columns);
-  }
+  };
 
-  public getColumns(): TaskList[] {
+  getColumns = (): IColumn[] => {
     const value = this.storage.getItem(this.columnKey);
     if (value) {
-      return JSON.parse(value);
+      const columns = JSON.parse(value);
+      return columns;
     }
 
     return [];
-  }
+  };
 
-  private setColumns(arr: TaskList[]) {
+  setColumns = (arr: IColumn[]): void => {
     this.storage.setItem(this.columnKey, JSON.stringify(arr));
-  }
+  };
 
-  public removeColumns() {
+  removeColumns = (): void => {
     this.storage.removeItem(this.columnKey);
-  }
+  };
 
   // Column store
 
-  public addColumn(name: string) {
+  addColumn = (name: string): void => {
     const columns = this.getColumns();
     const position = columns.length ?? 0;
-    const taskList = new TaskListImpl(name, position);
+    const taskList = new ColumnImpl(name, position);
 
     columns.push(taskList);
     this.setColumns(columns);
-  }
+  };
 
-  public renameColumn(id: string, name: string) {
+  renameColumn = (id: string, name: string): void => {
     const columns = this.getColumns().map((c) => {
       if (c.id === id) {
         c.name = name;
@@ -70,7 +72,20 @@ class StoreService {
     });
 
     this.setColumns(columns);
-  }
+  };
+
+  // Task store
+
+  addTask = (name: string, columnId: string): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = new TaskImpl(name, column.tasks.length, columnId);
+      column.tasks.push(task);
+    }
+
+    this.setColumns(columns);
+  };
 }
 
 export default new StoreService();

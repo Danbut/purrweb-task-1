@@ -7,8 +7,8 @@ interface PopupProps {
   onHide: () => void;
 }
 
-export const Popup: React.FC<PopupProps> = (props) => {
-  const [text, setText] = useState<string>("");
+const Popup: React.FC<PopupProps> = (props) => {
+  const [text, setText] = useState("");
 
   const saveAuthorName = () => {
     store.setName(text);
@@ -51,3 +51,5 @@ export const Popup: React.FC<PopupProps> = (props) => {
     </Modal>
   );
 };
+
+export default Popup;
