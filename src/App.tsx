@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Popup } from "./components/Popup/Popup";
+import Popup from "./components/Popup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./utils/store";
-import { Board } from "./components/Board/Board";
+import Board from "./components/Board";
 import {
   DONE_COLUMN_NAME,
   IN_PROGRESS_COLUMN_NAME,
@@ -12,7 +12,7 @@ import {
 } from "./constants/exampleColumnNames";
 
 function App() {
-  const [isShowPopup, setIsShowPopup] = useState<boolean>(false);
+  const [isShowPopup, setIsShowPopup] = useState(false);
 
   useEffect(() => {
     const author = store.getName();

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { TaskList } from "../../entities/TaskList/ITaskList";
+import { ITaskList } from "../../entities/TaskList/ITaskList";
 import { Form } from "react-bootstrap";
 import store from "../../utils/store";
-import "./Column.css";
-import { AddCard } from "../AddCard/AddCard";
+import "./index.css";
+import AddCard from "../AddCard";
 
 interface ColumnProps {
-  taskList: TaskList;
+  taskList: ITaskList;
 }
 
-export const Column: React.FC<ColumnProps> = ({ taskList }) => {
-  const [columnName, setColumnName] = useState<string>(taskList.name);
+const Column: React.FC<ColumnProps> = ({ taskList }) => {
+  const [columnName, setColumnName] = useState(taskList.name);
 
   const renameColumn = () => {
     store.renameColumn(taskList.id, columnName);
@@ -36,3 +36,5 @@ export const Column: React.FC<ColumnProps> = ({ taskList }) => {
     </Form>
   );
 };
+
+export default Column;

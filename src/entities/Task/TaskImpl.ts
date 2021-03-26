@@ -1,8 +1,8 @@
 import { uuidv4 } from "../../utils/uuidv4";
 import store from "../../utils/store";
-import { Task } from "./ITask";
+import { ITask } from "./ITask";
 
-export class TaskImpl implements Task {
+export class TaskImpl implements ITask {
   id: string;
   name: string;
   position: number;

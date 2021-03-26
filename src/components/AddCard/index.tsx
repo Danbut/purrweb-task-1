@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import "./AddCard.css";
+import "./index.css";
 import store from "../../utils/store";
 
 interface AddCardProps {
   columnId: string;
 }
 
-export const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [text, setText] = useState<string>("");
+const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
+  const [isActive, setIsActive] = useState(false);
+  const [text, setText] = useState("");
 
   const addTask = () => {
     store.addTask(text, columnId);
@@ -47,3 +47,5 @@ export const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
     );
   }
 };
+
+export default AddCard;

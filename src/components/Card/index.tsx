@@ -2,6 +2,8 @@ import React from "react";
 
 interface CardProps {}
 
-export const CardProps: React.FC<CardProps> = () => {
+const Card: React.FC<CardProps> = () => {
   return <div></div>;
 };
+
+export default Card;
