@@ -1,5 +1,5 @@
 .card-details__header {
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
 .card-details__description {

@@ -18,6 +18,8 @@ const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
     if (setColumns) {
       setColumns(store.getColumns());
     }
+    setIsActive(false);
+    setText("");
   };
 
   if (isActive) {

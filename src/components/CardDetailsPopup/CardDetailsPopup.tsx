@@ -33,14 +33,14 @@ const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
       aria-labelledby="example-modal-sizes-title-sm"
       centered
     >
-      <Modal.Header className="card-details__header">
-        <Modal.Title id="contained-modal-title-vcenter">
-          {props.task.name}
-        </Modal.Title>
+      <Modal.Header className="card-details__header" closeButton>
+        <Modal.Title className="h6">author: {props.task.author}</Modal.Title>
         <Modal.Title className="h6">
           In column: {columns?.find((c) => props.task.columnId === c.id)?.name}
         </Modal.Title>
-        <Modal.Title className="h6">author: {props.task.author}</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {props.task.name}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>

@@ -20,6 +20,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ taskId, columnId }) => {
     if (comments && setComments) {
       setComments(comments);
     }
+    setComment("");
   };
 
   return (
