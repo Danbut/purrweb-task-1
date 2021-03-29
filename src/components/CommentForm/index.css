@@ -1,0 +1,4 @@
+.comment-form__textarea {
+  overflow: hidden;
+  resize: none;
+}

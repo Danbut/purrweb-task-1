@@ -1,39 +1,42 @@
 import React, { useState } from "react";
-import { TaskList } from "../../entities/TaskList/ITaskList";
-import { Button, Form } from "react-bootstrap";
+import { IColumn } from "../../entities/Column/IColumn";
+import { Form } from "react-bootstrap";
 import store from "../../utils/store";
-import "./column.css";
+import "./index.css";
+import AddCard from "../AddCard";
+import Card from "../Card";
 
 interface ColumnProps {
-  taskList: TaskList;
+  column: IColumn;
 }
 
-export const Column: React.FC<ColumnProps> = ({ taskList }) => {
-  const [columnName, setColumnName] = useState<string>(taskList.name);
+const Column: React.FC<ColumnProps> = ({ column }) => {
+  const [columnName, setColumnName] = useState(column.name);
 
   const renameColumn = () => {
-    store.renameColumn(taskList.id, columnName);
+    store.renameColumn(column.id, columnName);
   };
 
   return (
-    <Form className="column" onSubmit={renameColumn}>
+    <Form className="column">
       <Form.Group className="column__header" controlId="formBasicColumnName">
         <Form.Control
           as="textarea"
           rows={1}
-          className="column__columnName"
+          className="column__column-name"
           plaintext
           type="text"
           value={columnName}
           onChange={({ target: { value } }) => setColumnName(value)}
           onBlur={renameColumn}
         />
-        <a className="column__more">...</a>
       </Form.Group>
-
-      <Button variant="primary" block>
-        Add task
-      </Button>
+      {column.tasks.map((t) => (
+        <Card task={t} key={`id:${t.id}`} />
+      ))}
+      <AddCard columnId={column.id} />
     </Form>
   );
 };
+
+export default Column;

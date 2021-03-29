@@ -7,11 +7,7 @@
   display: flex;
 }
 
-.column__columnName {
+.column__column-name {
   overflow: hidden;
   resize: none;
-}
-
-.column__more {
-  padding: 3px;
 }

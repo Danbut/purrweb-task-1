@@ -1,5 +1,7 @@
-import { TaskListImpl } from "../entities/TaskList/TaskList";
-import { TaskList } from "../entities/TaskList/ITaskList";
+import { ColumnImpl } from "../entities/Column/ColumnImpl";
+import { IColumn } from "../entities/Column/IColumn";
+import { CommentImpl } from "../entities/Comment/CommentImpl";
+import { TaskImpl } from "../entities/Task/TaskImpl";
 
 class StoreService {
   private authorNameKey = "author";
@@ -8,60 +10,59 @@ class StoreService {
 
   // Name store
 
-  public setName(name: string) {
+  setName = (name: string): void => {
     this.storage.setItem(this.authorNameKey, name);
-  }
+  };
 
-  public getName() {
+  getName = (): string | null => {
     return this.storage.getItem(this.authorNameKey);
-  }
+  };
 
-  public removeName() {
+  removeName = (): void => {
     this.storage.removeItem(this.authorNameKey);
-  }
+  };
 
   // Columns store
 
-  public addColumns(names: string[]) {
+  addColumns = (names: string[]): void => {
     const columns = this.getColumns();
-    const position = columns.length ?? 0;
 
-    names.forEach((name, index) => {
-      columns.push(new TaskListImpl(name, position + index));
+    names.forEach((name) => {
+      columns.push(new ColumnImpl(name));
     });
 
     this.setColumns(columns);
-  }
+  };
 
-  public getColumns(): TaskList[] {
+  getColumns = (): IColumn[] => {
     const value = this.storage.getItem(this.columnKey);
     if (value) {
-      return JSON.parse(value);
+      const columns = JSON.parse(value);
+      return columns;
     }
 
     return [];
-  }
+  };
 
-  private setColumns(arr: TaskList[]) {
+  setColumns = (arr: IColumn[]): void => {
     this.storage.setItem(this.columnKey, JSON.stringify(arr));
-  }
+  };
 
-  public removeColumns() {
+  removeColumns = (): void => {
     this.storage.removeItem(this.columnKey);
-  }
+  };
 
   // Column store
 
-  public addColumn(name: string) {
+  addColumn = (name: string): void => {
     const columns = this.getColumns();
-    const position = columns.length ?? 0;
-    const taskList = new TaskListImpl(name, position);
+    const taskList = new ColumnImpl(name);
 
     columns.push(taskList);
     this.setColumns(columns);
-  }
+  };
 
-  public renameColumn(id: string, name: string) {
+  renameColumn = (id: string, name: string): void => {
     const columns = this.getColumns().map((c) => {
       if (c.id === id) {
         c.name = name;
@@ -70,7 +71,114 @@ class StoreService {
     });
 
     this.setColumns(columns);
-  }
+  };
+
+  // Task store
+
+  addTask = (name: string, columnId: string): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    const author = this.getName()!!;
+    if (column) {
+      const task = new TaskImpl(name, columnId, author);
+      column.tasks.push(task);
+    }
+
+    this.setColumns(columns);
+  };
+
+  removeTask = (taskId: string, columnId: string): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      column.tasks = column.tasks.filter((t) => taskId !== t.id);
+    }
+
+    this.setColumns(columns);
+  };
+
+  changeTaskDescription = (
+    taskId: string,
+    columnId: string,
+    description: string
+  ): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.description = description;
+      }
+    }
+
+    this.setColumns(columns);
+  };
+
+  renameTask = (taskId: string, columnId: string, name: string): void => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.name = name;
+      }
+    }
+
+    this.setColumns(columns);
+  };
+
+  // Comment Store
+
+  addComment = (comment: string, taskId: string, columnId: string) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    const task = column?.tasks.find((t) => taskId === t.id);
+    task?.comments.push(new CommentImpl(comment, this.getName()!!));
+
+    this.setColumns(columns);
+  };
+
+  getComments = (taskId: string, columnId: string) => {
+    const column = this.getColumns().find((c) => columnId === c.id);
+    const task = column?.tasks.find((t) => taskId === t.id);
+    return task?.comments;
+  };
+
+  changeComment = (
+    taskId: string,
+    columnId: string,
+    commentId: string,
+    text: string
+  ) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.comments = task.comments.map((c) => {
+          if (commentId === c.id) {
+            c.text = text;
+          }
+          return c;
+        });
+      }
+    }
+
+    this.setColumns(columns);
+  };
+
+  removeComment = (taskId: string, columnId: string, commentId: string) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.comments = task.comments.filter((c) => commentId !== c.id);
+      }
+    }
+
+    this.setColumns(columns);
+  };
 }
 
 export default new StoreService();
