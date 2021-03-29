@@ -27,6 +27,15 @@ const Card: React.FC<CardProps> = ({ task }) => {
   const controlRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    window.addEventListener("click", onClosePopover);
+    return () => window.removeEventListener("click", onClosePopover);
+  }, []);
+
+  const onClosePopover = () => {
+    setIsShowActionsPopover(false);
+  };
+
+  useEffect(() => {
     const countComments = store.getComments(task.id, task.columnId);
     setCountComments(countComments?.length);
   }, []);

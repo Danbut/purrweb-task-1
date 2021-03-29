@@ -24,6 +24,14 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
   const [commentText, setCommentText] = useState(comment.text);
   const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
   const controlRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    window.addEventListener("click", onClosePopover);
+    return () => window.removeEventListener("click", onClosePopover);
+  }, []);
+
+  const onClosePopover = () => {
+    setIsShowActionsPopover(false);
+  };
 
   useEffect(() => {
     if (isChangingComment) {
