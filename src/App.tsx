@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { EnterNamePopup } from "./components/Popup";
+import "bootstrap/dist/css/bootstrap.min.css";
+import store from "./utils/store";
+import { Board } from "./components/Board";
+import { ColumnsProvider } from "./context/ColumnsContext";
 
 function App() {
+  const [isShowPopup, setIsShowPopup] = useState(false);
+
+  useEffect(() => {
+    const author = store.getName();
+
+    if (!author) {
+      setIsShowPopup(true);
+    }
+  }, []);
+
+  const handleClose = () => {
+    setIsShowPopup(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ColumnsProvider>
+        <Board />
+      </ColumnsProvider>
+      <EnterNamePopup show={isShowPopup} onHide={handleClose} />
     </div>
   );
 }

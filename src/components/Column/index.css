@@ -1,0 +1,13 @@
+.column {
+  padding: 20px;
+  background-color: white;
+}
+
+.column__header {
+  display: flex;
+}
+
+.column__column-name {
+  overflow: hidden;
+  resize: none;
+}
