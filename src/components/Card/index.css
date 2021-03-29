@@ -29,3 +29,9 @@
   overflow: hidden;
   resize: none;
 }
+
+.card__form {
+  margin: 0;
+  padding: 0;
+  height: auto;
+}

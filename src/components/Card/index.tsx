@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ITask } from "../../entities/Task/ITask";
 import {
   Button,
@@ -6,6 +6,7 @@ import {
   OverlayTrigger,
   Popover,
   Form,
+  InputGroup,
 } from "react-bootstrap";
 import "./index.css";
 import CardDetailsPopup from "../CardDetailsPopup";
@@ -22,11 +23,19 @@ const Card: React.FC<CardProps> = ({ task }) => {
   const [isRenamingTask, setIsRenamingTask] = useState(false);
   const [, setColumns] = useColumns();
   const [taskName, setTaskName] = useState(task.name);
+  const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
+  const controlRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const countComments = store.getComments(task.id, task.columnId);
     setCountComments(countComments?.length);
   }, []);
+
+  useEffect(() => {
+    if (isRenamingTask) {
+      controlRef.current?.focus();
+    }
+  }, [isRenamingTask]);
 
   const handleClose = () => {
     setIsShowCardDetails(false);
@@ -37,6 +46,7 @@ const Card: React.FC<CardProps> = ({ task }) => {
     if (setColumns) {
       setColumns(store.getColumns());
     }
+    handleClickPopover();
   };
 
   const renameTask = () => {
@@ -44,6 +54,11 @@ const Card: React.FC<CardProps> = ({ task }) => {
     if (setColumns) {
       setColumns(store.getColumns());
     }
+    setIsRenamingTask(false);
+  };
+
+  const handleClickPopover = () => {
+    setIsShowActionsPopover(!isShowActionsPopover);
   };
 
   const popover = (
@@ -55,6 +70,7 @@ const Card: React.FC<CardProps> = ({ task }) => {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
+            handleClickPopover();
             setIsRenamingTask(true);
           }}
         >
@@ -75,26 +91,33 @@ const Card: React.FC<CardProps> = ({ task }) => {
         onClick={() => setIsShowCardDetails(true)}
       >
         {isRenamingTask ? (
-          <Form>
+          <Form className="card__form">
             <Form.Group controlId="formBasicColumnName">
-              <Form.Control
-                as="textarea"
-                rows={1}
-                plaintext
-                type="text"
-                value={taskName}
-                onChange={(e) => {
-                  setTaskName(e.target.value);
-                }}
-                onClick={(
-                  e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
-                ) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                }}
-                className="card__renaming-task"
-                onBlur={renameTask}
-              />
+              <InputGroup hasValidation>
+                <Form.Control
+                  required
+                  as="textarea"
+                  rows={1}
+                  plaintext
+                  type="text"
+                  value={taskName}
+                  onChange={(e) => {
+                    setTaskName(e.target.value);
+                  }}
+                  onClick={(
+                    e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
+                  ) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
+                  className="card__renaming-task h6"
+                  onBlur={renameTask}
+                  ref={controlRef}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter your name.
+                </Form.Control.Feedback>
+              </InputGroup>
             </Form.Group>
           </Form>
         ) : (
@@ -107,12 +130,17 @@ const Card: React.FC<CardProps> = ({ task }) => {
               {` ${countComments}`}
             </span>
           ) : null}
-          <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+          <OverlayTrigger
+            show={isShowActionsPopover}
+            placement="right"
+            overlay={popover}
+          >
             <button
               className="card__more"
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
+                handleClickPopover();
               }}
             >
               ...

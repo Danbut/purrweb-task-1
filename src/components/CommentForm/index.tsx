@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import store from "../../utils/store";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useComments } from "../../context/CommentsContext";
+import "./index.css";
 
 interface CommentFormProps {
   readonly taskId: string;
@@ -9,13 +10,12 @@ interface CommentFormProps {
 }
 
 const CommentForm: React.FC<CommentFormProps> = ({ taskId, columnId }) => {
-  const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [, setComments] = useComments();
 
   const addComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.addComment(comment, name, taskId, columnId);
+    store.addComment(comment, taskId, columnId);
     const comments = store.getComments(taskId, columnId);
     if (comments && setComments) {
       setComments(comments);
@@ -25,26 +25,16 @@ const CommentForm: React.FC<CommentFormProps> = ({ taskId, columnId }) => {
   return (
     <Form onSubmit={addComment}>
       <Form.Group controlId="formBasicName">
-        <Form.Label>Your name</Form.Label>
-        <InputGroup hasValidation>
-          <Form.Control
-            required
-            type="text"
-            placeholder="Enter name"
-            value={name}
-            onChange={({ target: { value } }) => setName(value)}
-          />
-          <Form.Control.Feedback type="invalid">
-            Please enter your name.
-          </Form.Control.Feedback>
-        </InputGroup>
         <Form.Label>Say something</Form.Label>
         <InputGroup hasValidation>
           <Form.Control
             required
+            as="textarea"
+            rows={3}
             type="text"
             value={comment}
             onChange={({ target: { value } }) => setComment(value)}
+            className="comment-form__textarea"
           />
           <Form.Control.Feedback type="invalid">
             Please enter your comment.

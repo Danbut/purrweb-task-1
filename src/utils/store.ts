@@ -130,16 +130,11 @@ class StoreService {
 
   // Comment Store
 
-  addComment = (
-    comment: string,
-    author: string,
-    taskId: string,
-    columnId: string
-  ) => {
+  addComment = (comment: string, taskId: string, columnId: string) => {
     const columns = this.getColumns();
     const column = columns.find((c) => columnId === c.id);
     const task = column?.tasks.find((t) => taskId === t.id);
-    task?.comments.push(new CommentImpl(comment, author));
+    task?.comments.push(new CommentImpl(comment, this.getName()!!));
 
     this.setColumns(columns);
   };
