@@ -3,6 +3,7 @@ import store from "../../utils/store";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useComments } from "../../context/CommentsContext";
 import "./index.css";
+import { useCommentsCount } from "../../context/CommentsCount";
 
 interface CommentFormProps {
   readonly taskId: string;
@@ -12,13 +13,15 @@ interface CommentFormProps {
 const CommentForm: React.FC<CommentFormProps> = ({ taskId, columnId }) => {
   const [comment, setComment] = useState("");
   const [, setComments] = useComments();
+  const [, setCommentsCount] = useCommentsCount();
 
   const addComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     store.addComment(comment, taskId, columnId);
     const comments = store.getComments(taskId, columnId);
-    if (comments && setComments) {
+    if (comments && setComments && setCommentsCount) {
       setComments(comments);
+      setCommentsCount(comments.length);
     }
     setComment("");
   };

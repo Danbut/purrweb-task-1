@@ -12,6 +12,7 @@ import "./index.css";
 import CardDetailsPopup from "../CardDetailsPopup";
 import store from "../../utils/store";
 import { useColumns } from "../../context/ColumnsContext";
+import { useCommentsCount } from "../../context/CommentsCount";
 
 interface CardProps {
   task: ITask;
@@ -19,7 +20,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ task }) => {
   const [isShowCardDetails, setIsShowCardDetails] = useState(false);
-  const [countComments, setCountComments] = useState<number | undefined>();
+  const [commentsCount, setCommentsCount] = useCommentsCount();
   const [isRenamingTask, setIsRenamingTask] = useState(false);
   const [, setColumns] = useColumns();
   const [taskName, setTaskName] = useState(task.name);
@@ -36,8 +37,10 @@ const Card: React.FC<CardProps> = ({ task }) => {
   };
 
   useEffect(() => {
-    const countComments = store.getComments(task.id, task.columnId);
-    setCountComments(countComments?.length);
+    if (setCommentsCount) {
+      const comments = store.getComments(task.id, task.columnId);
+      setCommentsCount(comments?.length ?? 0);
+    }
   }, []);
 
   useEffect(() => {
@@ -133,10 +136,10 @@ const Card: React.FC<CardProps> = ({ task }) => {
           <BootstrapCard.Title className="h6">{task.name}</BootstrapCard.Title>
         )}
         <BootstrapCard.Body className="card__body">
-          {countComments && countComments > 0 ? (
+          {commentsCount && commentsCount > 0 ? (
             <span>
               <img src="https://img.icons8.com/small/16/000000/message-group.png" />
-              {` ${countComments}`}
+              {` ${commentsCount}`}
             </span>
           ) : null}
           <OverlayTrigger

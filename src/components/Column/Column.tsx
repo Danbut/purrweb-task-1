@@ -5,6 +5,7 @@ import store from "../../utils/store";
 import "./index.css";
 import AddCard from "../AddCard";
 import Card from "../Card";
+import { CommentsCountProvider } from "../../context/CommentsCount";
 
 interface ColumnProps {
   column: IColumn;
@@ -32,7 +33,9 @@ const Column: React.FC<ColumnProps> = ({ column }) => {
         />
       </Form.Group>
       {column.tasks.map((t) => (
-        <Card task={t} key={`id:${t.id}`} />
+        <CommentsCountProvider>
+          <Card task={t} key={`id:${t.id}`} />
+        </CommentsCountProvider>
       ))}
       <AddCard columnId={column.id} />
     </Form>

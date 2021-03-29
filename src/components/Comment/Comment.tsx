@@ -8,6 +8,7 @@ import {
   Popover,
 } from "react-bootstrap";
 import { useComments } from "../../context/CommentsContext";
+import { useCommentsCount } from "../../context/CommentsCount";
 import { IComment } from "../../entities/Comment/IComment";
 import store from "../../utils/store";
 import "./index.css";
@@ -21,6 +22,7 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
   const [isChangingComment, setIsChangingComment] = useState(false);
   const [, setComments] = useComments();
+  const [, setCommentsCount] = useCommentsCount();
   const [commentText, setCommentText] = useState(comment.text);
   const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
   const controlRef = useRef<HTMLTextAreaElement>(null);
@@ -41,14 +43,16 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
 
   const updateComments = () => {
     const comments = store.getComments(taskId, columnId);
-    if (comments && setComments) {
+    if (comments && setComments && setCommentsCount) {
       setComments(comments);
+      setCommentsCount(comments.length);
     }
   };
 
   const removeComment = () => {
     store.removeComment(taskId, columnId, comment.id);
     updateComments();
+
     handleClickPopover();
   };
 
