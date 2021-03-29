@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import store from "../../utils/store";
 
-interface EnterNamePopupProps {
+interface PopupProps {
   show: boolean;
   onHide: () => void;
 }
 
-const EnterNamePopup: React.FC<EnterNamePopupProps> = (props) => {
-  const [text, setText] = useState("");
+export const Popup: React.FC<PopupProps> = (props) => {
+  const [text, setText] = useState<string>("");
 
   const saveAuthorName = () => {
     store.setName(text);
@@ -21,6 +21,7 @@ const EnterNamePopup: React.FC<EnterNamePopupProps> = (props) => {
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      onSubmit={saveAuthorName}
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -43,12 +44,10 @@ const EnterNamePopup: React.FC<EnterNamePopupProps> = (props) => {
         <Button variant="danger" onClick={props.onHide}>
           Close
         </Button>
-        <Button variant="primary" onClick={saveAuthorName}>
+        <Button variant="primary" type="submit" onClick={saveAuthorName}>
           Save
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
-
-export default EnterNamePopup;

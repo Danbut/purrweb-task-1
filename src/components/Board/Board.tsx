@@ -1,20 +1,23 @@
-import React from "react";
-import "./index.css";
-import Column from "../Column";
-import { useColumns } from "../../context/ColumnsContext";
+import React, { useEffect, useState } from "react";
+import "./board.css";
+import { TaskList } from "../../entities/TaskList/ITaskList";
+import store from "../../utils/store";
+import { Column } from "../Column/Column";
 
 interface BoardProps {}
 
-const Board: React.FC<BoardProps> = () => {
-  const [columns] = useColumns();
+export const Board: React.FC<BoardProps> = () => {
+  const [columns, setColumns] = useState<TaskList[]>([]);
+
+  useEffect(() => {
+    setColumns(store.getColumns());
+  }, []);
 
   return (
     <div className="board">
-      {columns?.map((c) => (
-        <Column column={c} key={`id:${c.id}`} />
+      {columns.map((taskList) => (
+        <Column taskList={taskList} />
       ))}
     </div>
   );
 };
-
-export default Board;
