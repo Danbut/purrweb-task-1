@@ -6,7 +6,6 @@ import { TaskImpl } from "../entities/Task/TaskImpl";
 class StoreService {
   private authorNameKey = "author";
   private columnKey = "columns";
-  private commentsKey = "comments";
   private storage = window.localStorage;
 
   // Name store
