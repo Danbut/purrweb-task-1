@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
-import { useColumns } from "../../context/ColumnsContext";
 import { CommentsProvider } from "../../context/CommentsContext";
 import { ITask } from "../../entities/Task/ITask";
+import { useAppSelector } from "../../state/hooks";
 import store from "../../utils/store";
 import { CommentForm } from "../CommentForm";
 import { CommentList } from "../CommentList";
@@ -15,7 +15,7 @@ interface CardDetailsPopupProps {
 }
 
 const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
-  const [columns] = useColumns();
+  const columns = useAppSelector((state) => state.columns.columns);
   const [description, setDescription] = useState(props.task.description);
 
   const changeDescription = () => {

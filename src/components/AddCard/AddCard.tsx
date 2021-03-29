@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./index.css";
 import store from "../../utils/store";
-import { useColumns } from "../../context/ColumnsContext";
+import { saveColumns } from "../../state/columns/columnsSlice";
+import { useAppDispatch } from "../../state/hooks";
 
 interface AddCardProps {
   columnId: string;
@@ -11,13 +12,12 @@ interface AddCardProps {
 const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
   const [isActive, setIsActive] = useState(false);
   const [text, setText] = useState("");
-  const [, setColumns] = useColumns();
+  const dispatch = useAppDispatch();
 
   const addTask = () => {
     store.addTask(text, columnId);
-    if (setColumns) {
-      setColumns(store.getColumns());
-    }
+    //TODO: extraReducers are needed here most likely
+    dispatch(saveColumns(store.getColumns()));
     setIsActive(false);
     setText("");
   };

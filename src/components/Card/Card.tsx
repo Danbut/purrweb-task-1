@@ -11,8 +11,9 @@ import {
 import "./index.css";
 import { CardDetailsPopup } from "../CardDetailsPopup";
 import store from "../../utils/store";
-import { useColumns } from "../../context/ColumnsContext";
 import { useCommentsCount } from "../../context/CommentsCount";
+import { useAppDispatch } from "../../state/hooks";
+import { saveColumns } from "../../state/columns/columnsSlice";
 
 interface CardProps {
   task: ITask;
@@ -22,7 +23,7 @@ const Card: React.FC<CardProps> = ({ task }) => {
   const [isShowCardDetails, setIsShowCardDetails] = useState(false);
   const [commentsCount, setCommentsCount] = useCommentsCount();
   const [isRenamingTask, setIsRenamingTask] = useState(false);
-  const [, setColumns] = useColumns();
+  const dispatch = useAppDispatch();
   const [taskName, setTaskName] = useState(task.name);
   const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
   const controlRef = useRef<HTMLTextAreaElement>(null);
@@ -55,17 +56,15 @@ const Card: React.FC<CardProps> = ({ task }) => {
 
   const removeTask = () => {
     store.removeTask(task.id, task.columnId);
-    if (setColumns) {
-      setColumns(store.getColumns());
-    }
+    //TODO: extraReducers are needed here most likely
+    dispatch(saveColumns(store.getColumns()));
     handleClickPopover();
   };
 
   const renameTask = () => {
     store.renameTask(task.id, task.columnId, taskName);
-    if (setColumns) {
-      setColumns(store.getColumns());
-    }
+    //TODO: extraReducers are needed here most likely
+    dispatch(saveColumns(store.getColumns()));
     setIsRenamingTask(false);
   };
 
