@@ -144,6 +144,42 @@ class StoreService {
     const task = column?.tasks.find((t) => taskId === t.id);
     return task?.comments;
   };
+
+  changeComment = (
+    taskId: string,
+    columnId: string,
+    commentId: string,
+    text: string
+  ) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.comments = task.comments.map((c) => {
+          if (commentId === c.id) {
+            c.text = text;
+          }
+          return c;
+        });
+      }
+    }
+
+    this.setColumns(columns);
+  };
+
+  removeComment = (taskId: string, columnId: string, commentId: string) => {
+    const columns = this.getColumns();
+    const column = columns.find((c) => columnId === c.id);
+    if (column) {
+      const task = column.tasks.find((t) => taskId === t.id);
+      if (task) {
+        task.comments = task.comments.filter((c) => commentId !== c.id);
+      }
+    }
+
+    this.setColumns(columns);
+  };
 }
 
 export default new StoreService();
