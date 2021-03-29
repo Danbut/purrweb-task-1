@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import EnterNamePopup from "./components/Popup";
+import { EnterNamePopup } from "./components/Popup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./utils/store";
-import Board from "./components/Board";
+import { Board } from "./components/Board";
 import { ColumnsProvider } from "./context/ColumnsContext";
 
 function App() {

@@ -1,3 +1,1 @@
-import AddCard from "./AddCard";
-
-export default AddCard;
+export { default as AddCard } from "./AddCard";

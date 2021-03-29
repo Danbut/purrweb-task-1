@@ -9,7 +9,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import "./index.css";
-import CardDetailsPopup from "../CardDetailsPopup";
+import { CardDetailsPopup } from "../CardDetailsPopup";
 import store from "../../utils/store";
 import { useColumns } from "../../context/ColumnsContext";
 import { useCommentsCount } from "../../context/CommentsCount";

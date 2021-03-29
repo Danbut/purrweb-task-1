@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import Column from "../Column";
+import { Column } from "../Column";
 import { useColumns } from "../../context/ColumnsContext";
 
 interface BoardProps {}

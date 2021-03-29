@@ -1,3 +1,1 @@
-import EnterNamePopup from "./Popup";
-
-export default EnterNamePopup;
+export { default as EnterNamePopup } from "./Popup";

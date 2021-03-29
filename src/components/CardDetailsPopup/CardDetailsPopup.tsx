@@ -4,8 +4,8 @@ import { useColumns } from "../../context/ColumnsContext";
 import { CommentsProvider } from "../../context/CommentsContext";
 import { ITask } from "../../entities/Task/ITask";
 import store from "../../utils/store";
-import CommentForm from "../CommentForm";
-import CommentsList from "../CommentList";
+import { CommentForm } from "../CommentForm";
+import { CommentList } from "../CommentList";
 import "./index.css";
 
 interface CardDetailsPopupProps {
@@ -62,7 +62,7 @@ const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
       </Modal.Body>
       <Modal.Footer className="card-details__comments-box">
         <CommentsProvider>
-          <CommentsList taskId={props.task.id} columnId={props.task.columnId} />
+          <CommentList taskId={props.task.id} columnId={props.task.columnId} />
           <CommentForm taskId={props.task.id} columnId={props.task.columnId} />
         </CommentsProvider>
       </Modal.Footer>

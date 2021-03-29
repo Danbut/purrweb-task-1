@@ -1,3 +1,1 @@
-import CommentForm from "./CommentForm";
-
-export default CommentForm;
+export { default as CommentForm } from "./CommentForm";

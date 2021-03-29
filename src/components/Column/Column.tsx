@@ -3,8 +3,8 @@ import { IColumn } from "../../entities/Column/IColumn";
 import { Form } from "react-bootstrap";
 import store from "../../utils/store";
 import "./index.css";
-import AddCard from "../AddCard";
-import Card from "../Card";
+import { AddCard } from "../AddCard";
+import { Card } from "../Card";
 import { CommentsCountProvider } from "../../context/CommentsCount";
 
 interface ColumnProps {

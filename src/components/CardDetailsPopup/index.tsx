@@ -1,3 +1,1 @@
-import CardDetailsPopup from "./CardDetailsPopup";
-
-export default CardDetailsPopup;
+export { default as CardDetailsPopup } from "./CardDetailsPopup";

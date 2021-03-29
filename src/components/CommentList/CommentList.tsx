@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useComments } from "../../context/CommentsContext";
 import store from "../../utils/store";
-import Comment from "../Comment";
+import { Comment } from "../Comment";
 
 interface CommentsListProps {
   readonly taskId: string;
