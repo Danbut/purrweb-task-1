@@ -10,10 +10,9 @@ import {
 } from "react-bootstrap";
 import "./index.css";
 import { CardDetailsPopup } from "../CardDetailsPopup";
-import store from "../../utils/store";
-import { useCommentsCount } from "../../context/CommentsCount";
-import { useAppDispatch } from "../../state/hooks";
-import { saveColumns } from "../../state/columns/columnsSlice";
+import { useAppDispatch, useAppSelector } from "../../state/hooks";
+import { removeTask, renameTask } from "../../state/task/taskSlice";
+import { selectComments } from "../../state/comments/commentsSlice";
 
 interface CardProps {
   task: ITask;
@@ -21,7 +20,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ task }) => {
   const [isShowCardDetails, setIsShowCardDetails] = useState(false);
-  const [commentsCount, setCommentsCount] = useCommentsCount();
+  const commentsCount = useAppSelector(selectComments).get(task.id)
+    ?.commentsCount;
   const [isRenamingTask, setIsRenamingTask] = useState(false);
   const dispatch = useAppDispatch();
   const [taskName, setTaskName] = useState(task.name);
@@ -38,13 +38,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
   };
 
   useEffect(() => {
-    if (setCommentsCount) {
-      const comments = store.getComments(task.id, task.columnId);
-      setCommentsCount(comments?.length ?? 0);
-    }
-  }, []);
-
-  useEffect(() => {
     if (isRenamingTask) {
       controlRef.current?.focus();
     }
@@ -54,17 +47,15 @@ const Card: React.FC<CardProps> = ({ task }) => {
     setIsShowCardDetails(false);
   };
 
-  const removeTask = () => {
-    store.removeTask(task.id, task.columnId);
-    //TODO: extraReducers are needed here most likely
-    dispatch(saveColumns(store.getColumns()));
+  const removeTaskHandler = () => {
+    dispatch(removeTask({ taskId: task.id, columnId: task.columnId }));
     handleClickPopover();
   };
 
-  const renameTask = () => {
-    store.renameTask(task.id, task.columnId, taskName);
-    //TODO: extraReducers are needed here most likely
-    dispatch(saveColumns(store.getColumns()));
+  const renameTaskHandler = () => {
+    dispatch(
+      renameTask({ taskId: task.id, columnId: task.columnId, name: taskName })
+    );
     setIsRenamingTask(false);
   };
 
@@ -87,7 +78,7 @@ const Card: React.FC<CardProps> = ({ task }) => {
         >
           Rename task
         </Button>
-        <Button variant="danger" onClick={removeTask}>
+        <Button variant="danger" onClick={removeTaskHandler}>
           Remove task
         </Button>
       </Popover.Content>
@@ -122,7 +113,7 @@ const Card: React.FC<CardProps> = ({ task }) => {
                     e.preventDefault();
                   }}
                   className="card__renaming-task h6"
-                  onBlur={renameTask}
+                  onBlur={renameTaskHandler}
                   ref={controlRef}
                 />
                 <Form.Control.Feedback type="invalid">

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import store from "../../utils/store";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { useComments } from "../../context/CommentsContext";
 import "./index.css";
-import { useCommentsCount } from "../../context/CommentsCount";
+import { useAppDispatch } from "../../state/hooks";
+import { addComment } from "../../state/comments/commentsSlice";
 
 interface CommentFormProps {
   readonly taskId: string;
@@ -12,22 +11,17 @@ interface CommentFormProps {
 
 const CommentForm: React.FC<CommentFormProps> = ({ taskId, columnId }) => {
   const [comment, setComment] = useState("");
-  const [, setComments] = useComments();
-  const [, setCommentsCount] = useCommentsCount();
+  const dispatch = useAppDispatch();
 
-  const addComment = (e: React.FormEvent<HTMLFormElement>) => {
+  const addCommentHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.addComment(comment, taskId, columnId);
-    const comments = store.getComments(taskId, columnId);
-    if (comments && setComments && setCommentsCount) {
-      setComments(comments);
-      setCommentsCount(comments.length);
-    }
+    dispatch(addComment({ comment, taskId, columnId }));
+
     setComment("");
   };
 
   return (
-    <Form onSubmit={addComment}>
+    <Form onSubmit={addCommentHandler}>
       <Form.Group controlId="formBasicName">
         <Form.Label>Say something</Form.Label>
         <InputGroup hasValidation>

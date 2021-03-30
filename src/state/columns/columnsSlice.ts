@@ -12,14 +12,14 @@ const initialState: ColumnsState = {
 };
 
 export const addColumns = createAsyncThunk(
-  "name/addColumnsToStorage",
+  "columns/addColumnsToStorage",
   (columns: string[]) => {
     return store.addColumns(columns);
   }
 );
 
 export const saveColumns = createAsyncThunk(
-  "name/saveColumnsToStorage",
+  "columns/saveColumnsToStorage",
   (columns: IColumn[]) => {
     store.setColumns(columns);
     return columns;
@@ -27,7 +27,7 @@ export const saveColumns = createAsyncThunk(
 );
 
 export const clearColumns = createAsyncThunk(
-  "name/clearColumnsFromStorage",
+  "columns/clearColumnsFromStorage",
   () => {
     store.removeName();
   }
@@ -50,6 +50,6 @@ export const columnsSlice = createSlice({
   },
 });
 
-export const selectName = (state: RootState) => state.name;
+export const selectColumns = (state: RootState) => state.columns.columns;
 
 export default columnsSlice.reducer;

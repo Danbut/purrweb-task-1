@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
-import { CommentsProvider } from "../../context/CommentsContext";
 import { ITask } from "../../entities/Task/ITask";
-import { useAppSelector } from "../../state/hooks";
-import store from "../../utils/store";
+import { selectColumns } from "../../state/columns/columnsSlice";
+import { useAppDispatch, useAppSelector } from "../../state/hooks";
+import { changeTaskDescription } from "../../state/task/taskSlice";
 import { CommentForm } from "../CommentForm";
 import { CommentList } from "../CommentList";
 import "./index.css";
@@ -15,14 +15,17 @@ interface CardDetailsPopupProps {
 }
 
 const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
-  const columns = useAppSelector((state) => state.columns.columns);
+  const columns = useAppSelector(selectColumns);
   const [description, setDescription] = useState(props.task.description);
+  const dispatch = useAppDispatch();
 
   const changeDescription = () => {
-    store.changeTaskDescription(
-      props.task.id,
-      props.task.columnId,
-      description
+    dispatch(
+      changeTaskDescription({
+        taskId: props.task.id,
+        columnId: props.task.columnId,
+        description,
+      })
     );
   };
 
@@ -61,10 +64,8 @@ const CardDetailsPopup: React.FC<CardDetailsPopupProps> = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer className="card-details__comments-box">
-        <CommentsProvider>
-          <CommentList taskId={props.task.id} columnId={props.task.columnId} />
-          <CommentForm taskId={props.task.id} columnId={props.task.columnId} />
-        </CommentsProvider>
+        <CommentList taskId={props.task.id} columnId={props.task.columnId} />
+        <CommentForm taskId={props.task.id} columnId={props.task.columnId} />
       </Modal.Footer>
     </Modal>
   );

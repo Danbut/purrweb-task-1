@@ -4,10 +4,11 @@ import { EnterNamePopup } from "./components/Popup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Board } from "./components/Board";
 import { useAppSelector } from "./state/hooks";
+import { selectName } from "./state/name/nameSlice";
 
 function App() {
   const [isShowPopup, setIsShowPopup] = useState(false);
-  const name = useAppSelector((state) => state.name.name);
+  const name = useAppSelector(selectName);
 
   useEffect(() => {
     if (!name) {

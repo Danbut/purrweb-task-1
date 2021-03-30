@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import "./index.css";
-import store from "../../utils/store";
-import { saveColumns } from "../../state/columns/columnsSlice";
 import { useAppDispatch } from "../../state/hooks";
+import { addTask } from "../../state/task/taskSlice";
 
 interface AddCardProps {
   columnId: string;
@@ -14,10 +13,8 @@ const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
   const [text, setText] = useState("");
   const dispatch = useAppDispatch();
 
-  const addTask = () => {
-    store.addTask(text, columnId);
-    //TODO: extraReducers are needed here most likely
-    dispatch(saveColumns(store.getColumns()));
+  const addTaskHandler = () => {
+    dispatch(addTask({ name: text, columnId }));
     setIsActive(false);
     setText("");
   };
@@ -34,7 +31,7 @@ const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
           />
         </div>
         <div className="add-task-form__footer">
-          <Button variant="primary" onClick={addTask}>
+          <Button variant="primary" onClick={addTaskHandler}>
             Save
           </Button>
           <a

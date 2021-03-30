@@ -7,6 +7,7 @@ import {
 import { ColumnImpl } from "../entities/Column/ColumnImpl";
 import { IColumn } from "../entities/Column/IColumn";
 import { CommentImpl } from "../entities/Comment/CommentImpl";
+import { IComment } from "../entities/Comment/IComment";
 import { TaskImpl } from "../entities/Task/TaskImpl";
 
 class StoreService {
@@ -161,7 +162,28 @@ class StoreService {
   getComments = (taskId: string, columnId: string) => {
     const column = this.getColumns().find((c) => columnId === c.id);
     const task = column?.tasks.find((t) => taskId === t.id);
-    return task?.comments;
+    if (task?.comments) {
+      return task?.comments;
+    } else {
+      return [];
+    }
+  };
+
+  getAllComments = (): Map<
+    string,
+    { comments: IComment[]; commentsCount: number }
+  > => {
+    const columns = this.getColumns();
+    const comments = new Map();
+    columns.forEach((c) => {
+      c.tasks.forEach((t) => {
+        comments.set(t.id, {
+          comments: t.comments,
+          commentsCount: t.comments.length,
+        });
+      });
+    });
+    return comments;
   };
 
   changeComment = (

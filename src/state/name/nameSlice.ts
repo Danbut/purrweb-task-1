@@ -36,6 +36,6 @@ export const nameSlice = createSlice({
   },
 });
 
-export const selectName = (state: RootState) => state.name;
+export const selectName = (state: RootState) => state.name.name;
 
 export default nameSlice.reducer;

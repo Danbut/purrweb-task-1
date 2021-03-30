@@ -7,10 +7,12 @@ import {
   OverlayTrigger,
   Popover,
 } from "react-bootstrap";
-import { useComments } from "../../context/CommentsContext";
-import { useCommentsCount } from "../../context/CommentsCount";
 import { IComment } from "../../entities/Comment/IComment";
-import store from "../../utils/store";
+import {
+  changeComment,
+  removeComment,
+} from "../../state/comments/commentsSlice";
+import { useAppDispatch } from "../../state/hooks";
 import "./index.css";
 
 interface CommentProps {
@@ -21,11 +23,11 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
   const [isChangingComment, setIsChangingComment] = useState(false);
-  const [, setComments] = useComments();
-  const [, setCommentsCount] = useCommentsCount();
   const [commentText, setCommentText] = useState(comment.text);
   const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
   const controlRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     window.addEventListener("click", onClosePopover);
     return () => window.removeEventListener("click", onClosePopover);
@@ -41,24 +43,22 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
     }
   }, [isChangingComment]);
 
-  const updateComments = () => {
-    const comments = store.getComments(taskId, columnId);
-    if (comments && setComments && setCommentsCount) {
-      setComments(comments);
-      setCommentsCount(comments.length);
-    }
-  };
-
-  const removeComment = () => {
-    store.removeComment(taskId, columnId, comment.id);
-    updateComments();
+  const removeCommentHandler = () => {
+    dispatch(removeComment({ taskId, columnId, commentId: comment.id }));
 
     handleClickPopover();
   };
 
-  const changeComment = () => {
-    store.changeComment(taskId, columnId, comment.id, commentText);
-    updateComments();
+  const changeCommentHandler = () => {
+    dispatch(
+      changeComment({
+        taskId,
+        columnId,
+        commentId: comment.id,
+        text: commentText,
+      })
+    );
+
     setIsChangingComment(false);
   };
 
@@ -81,7 +81,7 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
         >
           Change comment
         </Button>
-        <Button variant="danger" onClick={removeComment}>
+        <Button variant="danger" onClick={removeCommentHandler}>
           Remove comment
         </Button>
       </Popover.Content>
@@ -115,7 +115,7 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
                     e.stopPropagation();
                     e.preventDefault();
                   }}
-                  onBlur={changeComment}
+                  onBlur={changeCommentHandler}
                   ref={controlRef}
                 />
                 <Form.Control.Feedback type="invalid">
