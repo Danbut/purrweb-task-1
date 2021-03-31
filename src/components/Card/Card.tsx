@@ -10,9 +10,9 @@ import {
 } from "react-bootstrap";
 import "./index.css";
 import { CardDetailsPopup } from "../CardDetailsPopup";
-import store from "../../utils/store";
-import { useColumns } from "../../context/ColumnsContext";
-import { useCommentsCount } from "../../context/CommentsCount";
+import { useAppDispatch, useAppSelector } from "../../state/hooks";
+import { removeTask, renameTask } from "../../state/task/taskSlice";
+import { selectComments } from "../../state/comments/commentsSlice";
 
 interface CardProps {
   task: ITask;
@@ -20,9 +20,10 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ task }) => {
   const [isShowCardDetails, setIsShowCardDetails] = useState(false);
-  const [commentsCount, setCommentsCount] = useCommentsCount();
+  const commentsCount = useAppSelector(selectComments).get(task.id)
+    ?.commentsCount;
   const [isRenamingTask, setIsRenamingTask] = useState(false);
-  const [, setColumns] = useColumns();
+  const dispatch = useAppDispatch();
   const [taskName, setTaskName] = useState(task.name);
   const [isShowActionsPopover, setIsShowActionsPopover] = useState(false);
   const controlRef = useRef<HTMLTextAreaElement>(null);
@@ -37,13 +38,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
   };
 
   useEffect(() => {
-    if (setCommentsCount) {
-      const comments = store.getComments(task.id, task.columnId);
-      setCommentsCount(comments?.length ?? 0);
-    }
-  }, []);
-
-  useEffect(() => {
     if (isRenamingTask) {
       controlRef.current?.focus();
     }
@@ -53,19 +47,15 @@ const Card: React.FC<CardProps> = ({ task }) => {
     setIsShowCardDetails(false);
   };
 
-  const removeTask = () => {
-    store.removeTask(task.id, task.columnId);
-    if (setColumns) {
-      setColumns(store.getColumns());
-    }
+  const removeTaskHandler = () => {
+    dispatch(removeTask({ taskId: task.id, columnId: task.columnId }));
     handleClickPopover();
   };
 
-  const renameTask = () => {
-    store.renameTask(task.id, task.columnId, taskName);
-    if (setColumns) {
-      setColumns(store.getColumns());
-    }
+  const renameTaskHandler = () => {
+    dispatch(
+      renameTask({ taskId: task.id, columnId: task.columnId, name: taskName })
+    );
     setIsRenamingTask(false);
   };
 
@@ -81,14 +71,13 @@ const Card: React.FC<CardProps> = ({ task }) => {
           variant="primary"
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault();
             handleClickPopover();
             setIsRenamingTask(true);
           }}
         >
           Rename task
         </Button>
-        <Button variant="danger" onClick={removeTask}>
+        <Button variant="danger" onClick={removeTaskHandler}>
           Remove task
         </Button>
       </Popover.Content>
@@ -120,10 +109,9 @@ const Card: React.FC<CardProps> = ({ task }) => {
                     e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
                   ) => {
                     e.stopPropagation();
-                    e.preventDefault();
                   }}
                   className="card__renaming-task h6"
-                  onBlur={renameTask}
+                  onBlur={renameTaskHandler}
                   ref={controlRef}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -151,7 +139,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
               className="card__more"
               onClick={(e) => {
                 e.stopPropagation();
-                e.preventDefault();
                 handleClickPopover();
               }}
             >

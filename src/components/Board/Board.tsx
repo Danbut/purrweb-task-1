@@ -1,12 +1,13 @@
 import React from "react";
 import "./index.css";
 import { Column } from "../Column";
-import { useColumns } from "../../context/ColumnsContext";
+import { useAppSelector } from "../../state/hooks";
+import { selectColumns } from "../../state/columns/columnsSlice";
 
 interface BoardProps {}
 
 const Board: React.FC<BoardProps> = () => {
-  const [columns] = useColumns();
+  const columns = useAppSelector(selectColumns);
 
   return (
     <div className="board">

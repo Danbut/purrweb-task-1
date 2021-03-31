@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useComments } from "../../context/CommentsContext";
-import store from "../../utils/store";
+import React from "react";
+import { selectComments } from "../../state/comments/commentsSlice";
+import { useAppSelector } from "../../state/hooks";
 import { Comment } from "../Comment";
 
 interface CommentsListProps {
@@ -9,14 +9,7 @@ interface CommentsListProps {
 }
 
 const CommentsList: React.FC<CommentsListProps> = ({ taskId, columnId }) => {
-  const [comments, setComments] = useComments();
-
-  useEffect(() => {
-    const comments = store.getComments(taskId, columnId);
-    if (comments && setComments) {
-      setComments(comments);
-    }
-  }, []);
+  const comments = useAppSelector(selectComments).get(taskId)?.comments;
 
   return (
     <>

@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { EnterNamePopup } from "./components/Popup";
 import "bootstrap/dist/css/bootstrap.min.css";
-import store from "./utils/store";
 import { Board } from "./components/Board";
-import { ColumnsProvider } from "./context/ColumnsContext";
+import { useAppSelector } from "./state/hooks";
+import { selectName } from "./state/name/nameSlice";
 
 function App() {
   const [isShowPopup, setIsShowPopup] = useState(false);
+  const name = useAppSelector(selectName);
 
   useEffect(() => {
-    const author = store.getName();
-
-    if (!author) {
+    if (!name) {
       setIsShowPopup(true);
     }
   }, []);
@@ -23,9 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      <ColumnsProvider>
-        <Board />
-      </ColumnsProvider>
+      <Board />
       <EnterNamePopup show={isShowPopup} onHide={handleClose} />
     </div>
   );

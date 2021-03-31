@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import store from "../../utils/store";
+import { useAppDispatch } from "../../state/hooks";
+import { saveName } from "../../state/name/nameSlice";
 
 interface EnterNamePopupProps {
   show: boolean;
@@ -9,9 +10,10 @@ interface EnterNamePopupProps {
 
 const EnterNamePopup: React.FC<EnterNamePopupProps> = (props) => {
   const [text, setText] = useState("");
+  const dispatch = useAppDispatch();
 
   const saveAuthorName = () => {
-    store.setName(text);
+    dispatch(saveName(text));
     props.onHide();
   };
 
