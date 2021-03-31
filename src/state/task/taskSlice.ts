@@ -43,12 +43,6 @@ export const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(addTask.fulfilled, () => {});
-    builder.addCase(removeTask.fulfilled, () => {});
-    builder.addCase(changeTaskDescription.fulfilled, () => {});
-    builder.addCase(renameTask.fulfilled, () => {});
-  },
 });
 
 export default taskSlice.reducer;

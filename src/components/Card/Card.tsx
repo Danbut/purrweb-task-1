@@ -71,7 +71,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
           variant="primary"
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault();
             handleClickPopover();
             setIsRenamingTask(true);
           }}
@@ -110,7 +109,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
                     e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
                   ) => {
                     e.stopPropagation();
-                    e.preventDefault();
                   }}
                   className="card__renaming-task h6"
                   onBlur={renameTaskHandler}
@@ -141,7 +139,6 @@ const Card: React.FC<CardProps> = ({ task }) => {
               className="card__more"
               onClick={(e) => {
                 e.stopPropagation();
-                e.preventDefault();
                 handleClickPopover();
               }}
             >

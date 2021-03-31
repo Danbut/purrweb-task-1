@@ -55,9 +55,6 @@ export const commentsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addComment.fulfilled, () => {});
-    builder.addCase(changeComment.fulfilled, () => {});
-    builder.addCase(removeComment.fulfilled, () => {});
     builder.addCase(getComments.fulfilled, (state, action) => {
       state.comments = action.payload;
     });

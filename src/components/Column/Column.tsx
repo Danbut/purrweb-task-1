@@ -16,26 +16,28 @@ const Column: React.FC<ColumnProps> = ({ column }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Form className="column">
-      <Form.Group className="column__header" controlId="formBasicColumnName">
-        <Form.Control
-          as="textarea"
-          rows={1}
-          className="column__column-name"
-          plaintext
-          type="text"
-          value={columnName}
-          onChange={({ target: { value } }) => setColumnName(value)}
-          onBlur={() => {
-            dispatch(renameColumn({ id: column.id, name: columnName }));
-          }}
-        />
-      </Form.Group>
+    <div className="column">
+      <Form>
+        <Form.Group className="column__header" controlId="formBasicColumnName">
+          <Form.Control
+            as="textarea"
+            rows={1}
+            className="column__column-name"
+            plaintext
+            type="text"
+            value={columnName}
+            onChange={({ target: { value } }) => setColumnName(value)}
+            onBlur={() => {
+              dispatch(renameColumn({ id: column.id, name: columnName }));
+            }}
+          />
+        </Form.Group>
+      </Form>
       {column.tasks.map((t) => (
         <Card task={t} key={`id:${t.id}`} />
       ))}
       <AddCard columnId={column.id} />
-    </Form>
+    </div>
   );
 };
 

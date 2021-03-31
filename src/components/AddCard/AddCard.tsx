@@ -34,7 +34,7 @@ const AddCard: React.FC<AddCardProps> = ({ columnId }) => {
           <Button variant="primary" onClick={addTaskHandler}>
             Save
           </Button>
-          <a
+          <button
             className="add-task-form__close"
             onClick={() => {
               setIsActive(false);

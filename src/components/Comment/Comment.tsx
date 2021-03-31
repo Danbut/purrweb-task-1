@@ -74,7 +74,6 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
           variant="primary"
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault();
             handleClickPopover();
             setIsChangingComment(true);
           }}
@@ -113,7 +112,6 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
                     e: React.MouseEvent<HTMLTextAreaElement, MouseEvent>
                   ) => {
                     e.stopPropagation();
-                    e.preventDefault();
                   }}
                   onBlur={changeCommentHandler}
                   ref={controlRef}
@@ -136,7 +134,6 @@ const Comment: React.FC<CommentProps> = ({ comment, taskId, columnId }) => {
             className="card__more"
             onClick={(e) => {
               e.stopPropagation();
-              e.preventDefault();
               handleClickPopover();
             }}
           >

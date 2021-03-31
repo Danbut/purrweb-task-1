@@ -23,10 +23,6 @@ export const columnSlice = createSlice({
   name: "column",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(addColumn.fulfilled, () => {});
-    builder.addCase(renameColumn.fulfilled, () => {});
-  },
 });
 
 export default columnSlice.reducer;
