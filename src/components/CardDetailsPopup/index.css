@@ -1,0 +1,14 @@
+.card-details__header {
+  flex-direction: column-reverse;
+}
+
+.card-details__description {
+  overflow: hidden;
+  resize: none;
+}
+
+.card-details__comments-box {
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+}
